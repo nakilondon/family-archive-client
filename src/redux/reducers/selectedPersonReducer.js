@@ -1,0 +1,13 @@
+import initalState from "./initialState";
+import * as types from "../actions/actionTypes";
+
+const viewReducer = (state = initalState.selectedPerson, action) => {
+  switch (action.type) {
+    case types.SET_SELECTED_PERSON:
+      return action.id;
+    default:
+      return state;
+  }
+};
+
+export default viewReducer;
