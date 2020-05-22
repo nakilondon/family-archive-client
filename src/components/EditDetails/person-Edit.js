@@ -11,7 +11,6 @@ import { connect } from "react-redux";
 import Edit from "./edit";
 import { toast } from "react-toastify";
 import { setViewMode } from "../../redux/actions/viewActions";
-import "react-toastify/dist/ReactToastify.css";
 
 function PersonEdit({
   loadPersonDetails,
@@ -40,7 +39,7 @@ function PersonEdit({
           setLoading(false);
         });
     }
-  }, [selectedPerson, loadPersonDetails, personDetails]);
+  }, [selectedPerson, loadPersonDetails, personDetails, loading]);
 
   function handleChange(e) {
     const valueData = { [e.target.id]: e.target.value };
@@ -60,7 +59,7 @@ function PersonEdit({
     setSaving(true);
     savePerson(personDetailsUpdate)
       .then(() => {
-        toast.success(`${personDetailsUpdate.preferredName} Saved ...`);
+        toast.success(`${personDetailsUpdate.preferredName} Changes saved ...`);
         setViewMode(ViewMode.SHOW_DETAIL);
       })
       .catch((error) => {
