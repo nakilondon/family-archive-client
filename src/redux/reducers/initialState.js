@@ -7,4 +7,5 @@ export default {
   peopleList: [],
   personDetails: "",
   selectedPerson: 253,
+  personDetailsUpdate: "",
 };

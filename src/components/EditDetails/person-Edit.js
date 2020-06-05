@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
-  loadPersonDetails,
+  loadPersonDetailsForUpdate,
   savePerson,
 } from "../../redux/actions/personDetailsActions";
 import { ViewMode } from "../../redux/actions/actionTypes";
@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { setViewMode } from "../../redux/actions/viewActions";
 
 function PersonEdit({
-  loadPersonDetails,
+  loadPersonDetailsForUpdate,
   selectedPerson,
   savePerson,
   personDetails,
@@ -25,13 +25,20 @@ function PersonEdit({
   });
   const [saving, setSaving] = useState(false);
   const [errors, setErrors] = useState({});
+  const isMountedRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    if ((personDetails.id === selectedPerson) & loading) {
-      setPersonDetailsUpdate({ ...personDetails });
-      setLoading(false);
-    } else {
-      loadPersonDetails(selectedPerson)
+    isMountedRef.current = true;
+
+    if (
+      !mounted |
+      ((personDetails.id !== selectedPerson) &
+        (!loading | (personDetails.id === undefined)))
+    ) {
+      setMounted(true);
+      setLoading(true);
+      loadPersonDetailsForUpdate(selectedPerson)
         .catch((error) => {
           alert("Loading person details failed " + error);
         })
@@ -39,14 +46,68 @@ function PersonEdit({
           setLoading(false);
         });
     }
-  }, [selectedPerson, loadPersonDetails, personDetails, loading]);
+
+    if (
+      (personDetailsUpdate.id !== personDetails.id) |
+      (loading & (personDetails !== null))
+    ) {
+      setPersonDetailsUpdate({ ...personDetails });
+    }
+
+    //   if (
+    //     personDetailsUpdate.id === personDetails.id &&
+    //     personDetails.id === selectedPerson
+    //   ) {
+    //     setLoading(false);
+    //   }
+
+    return () => (isMountedRef.current = false);
+  }, [
+    selectedPerson,
+    loadPersonDetailsForUpdate,
+    personDetails,
+    loading,
+    personDetailsUpdate.id,
+    personDetailsUpdate.preferredName,
+    setViewMode,
+    mounted,
+  ]);
 
   function handleChange(e) {
-    const valueData = { [e.target.id]: e.target.value };
+    const valueData = { [e.target.name]: e.target.value };
     setPersonDetailsUpdate((prevPersonDetails) => ({
       ...prevPersonDetails,
       ...valueData,
     }));
+  }
+
+  function handleLocationChange(id, location) {
+    if (location !== null) {
+      const valueData = { [id]: location.description };
+      setPersonDetailsUpdate((prevPersonDetails) => ({
+        ...prevPersonDetails,
+        ...valueData,
+      }));
+    }
+  }
+
+  function changeRelationship(name, list) {
+    const valueData = { [name]: list };
+    setPersonDetailsUpdate((prevPersonDetails) => ({
+      ...prevPersonDetails,
+      ...valueData,
+    }));
+  }
+
+  function handleDateChange(id, dateValue) {
+    if (dateValue !== null) {
+      const valueData = { [id]: dateValue };
+
+      setPersonDetailsUpdate((prevPersonDetails) => ({
+        ...prevPersonDetails,
+        ...valueData,
+      }));
+    }
   }
 
   function formIsValid() {
@@ -75,13 +136,17 @@ function PersonEdit({
       personDetails={personDetailsUpdate}
       errors={errors}
       onChange={handleChange}
+      onLocationChange={handleLocationChange}
+      onDateChange={handleDateChange}
       onSave={handleSave}
       saving={saving}
+      changeRelationship={changeRelationship}
     />
   );
 
   return (
     <Grid
+      item
       container
       space={5}
       direction="row"
@@ -98,20 +163,20 @@ function PersonEdit({
 PersonEdit.prototypes = {
   personDetails: PropTypes.object.isRequired,
   selectedPerson: PropTypes.number.isRequired,
-  loadPersonDetails: PropTypes.func.isRequired,
+  loadPersonDetailsForUpdate: PropTypes.func.isRequired,
   savePerson: PropTypes.func.isRequired,
   setViewMode: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
-    personDetails: state.personDetails,
+    personDetails: state.personDetailsUpdate,
     selectedPerson: state.selectedPerson,
   };
 }
 
 const mapDispatchToProps = {
-  loadPersonDetails,
+  loadPersonDetailsForUpdate,
   savePerson,
   setViewMode,
 };

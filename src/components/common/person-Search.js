@@ -5,10 +5,14 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { loadPeopleList } from "../../redux/actions/peopleListActions";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
-import Grid from "@material-ui/core/Grid";
 import { connect } from "react-redux";
 
-function PersonSelect({ peopleList, loadPeopleList, onSearchChange }) {
+function PersonSelect({
+  peopleList,
+  loadPeopleList,
+  onSearchChange,
+  selectedPerson,
+}) {
   useEffect(() => {
     if (peopleList.length === 0) {
       loadPeopleList().catch((error) => {
@@ -17,38 +21,32 @@ function PersonSelect({ peopleList, loadPeopleList, onSearchChange }) {
     }
   });
 
+  const person = selectedPerson === null ? "" : selectedPerson;
+
   const content =
     peopleList.length === 0 ? (
       <Spinner />
     ) : (
-      <Grid container align="row">
-        <Grid item>
-          <Autocomplete
-            placeholder="Search…"
-            id="personSearchId"
-            options={peopleList}
-            style={{ width: 300 }}
-            getOptionLabel={(option) => option.label}
-            renderInput={(params) => (
-              <TextField {...params} label="Find Someone" />
-            )}
-            onChange={onSearchChange}
-          />
-        </Grid>
-      </Grid>
+      <Autocomplete
+        value={person}
+        placeholder="Search…"
+        id="personSearchId"
+        options={peopleList}
+        style={{ width: 400 }}
+        getOptionLabel={(option) => option.label}
+        renderInput={(params) => <TextField {...params} label="Find Someone" />}
+        onChange={onSearchChange}
+      />
     );
 
-  return (
-    <Grid container align="center">
-      {content}
-    </Grid>
-  );
+  return <>{content}</>;
 }
 
 PersonSelect.prototypes = {
   peopleList: PropTypes.array.isRequired,
   loadPeopleList: PropTypes.func.isRequired,
   onSearchChange: PropTypes.func.isRequired,
+  selectedPerson: PropTypes.object.isOptional,
 };
 
 function mapStateToProps(state) {

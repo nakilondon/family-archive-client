@@ -8,6 +8,10 @@ export function loadPersonDetailsSuccess(personDetails) {
   return { type: types.LOAD_PERSON_DETAILS_SUCCESS, personDetails };
 }
 
+export function loadPersonDetailsForUpdateSuccess(personDetails) {
+  return { type: types.LOAD_PERSON_DETAILS_FOR_UPDATE_SUCCESS, personDetails };
+}
+
 export function updatePersonDetailsSuccess(savedPersonDetails) {
   return { type: types.UPDATE_PERSON_DETAILS_SUCCESS, savedPersonDetails };
 }
@@ -23,6 +27,21 @@ export function loadPersonDetails(id) {
       .getPersonDetails(id)
       .then((personDetails) => {
         dispatch(loadPersonDetailsSuccess(personDetails));
+      })
+      .catch((error) => {
+        dispatch(apiCallError(error));
+        throw error;
+      });
+  };
+}
+
+export function loadPersonDetailsForUpdate(id) {
+  return function (dispatch) {
+    dispatch(beginApiCall());
+    return personDetailsApi
+      .getPersonDetailsForUpdate(id)
+      .then((personDetails) => {
+        dispatch(loadPersonDetailsForUpdateSuccess(personDetails));
       })
       .catch((error) => {
         dispatch(apiCallError(error));
