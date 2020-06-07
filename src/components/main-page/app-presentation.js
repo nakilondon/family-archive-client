@@ -28,6 +28,8 @@ const ViewSwitch = (props) => {
       return <PersonDetails />;
     case ViewMode.SHOW_EDIT:
       return <EditDetails />;
+    case ViewMode.SHOW_ADD:
+      return <EditDetails />;
     case ViewMode.SHOW_UPLOAD:
       return <Upload />;
     default:

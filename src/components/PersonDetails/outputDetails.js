@@ -4,7 +4,7 @@ import Paper from "@material-ui/core/Paper";
 import { Typography, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 
-const OutputDetails = ({ personDetails, setSelectedPerson }) => {
+const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
   const FamilyTable = (Family) => {
     if (Family == null) {
       return <p>No Family</p>;
@@ -108,6 +108,14 @@ const OutputDetails = ({ personDetails, setSelectedPerson }) => {
               <Typography variant="h6">{personDetails.note}</Typography>
             </Grid>
           )}
+          <Button
+            size="small"
+            variant="contained"
+            color="secondary"
+            onClick={deletePerson}
+          >
+            Delete
+          </Button>
         </Paper>
       </Grid>
     );
@@ -149,6 +157,7 @@ const OutputDetails = ({ personDetails, setSelectedPerson }) => {
 OutputDetails.prototypes = {
   personDetails: PropTypes.object.isRequired,
   setSelectedPerson: PropTypes.func.isRequired,
+  deletePerson: PropTypes.func.isRequired,
 };
 
 export default OutputDetails;

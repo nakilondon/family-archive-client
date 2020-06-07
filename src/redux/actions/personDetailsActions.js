@@ -3,6 +3,9 @@ import * as personDetailsApi from "../../api/personDetailsApi";
 import { beginApiCall, apiCallError } from "./apiStatusActions";
 import { loadFamilyTree } from "./familyTreeActions";
 import { loadPeopleList } from "./peopleListActions";
+import { setSelectedPerson } from "./selectedPersonActions";
+import intialState from "../reducers/initialState";
+import { setViewMode } from "./viewActions";
 
 export function loadPersonDetailsSuccess(personDetails) {
   return { type: types.LOAD_PERSON_DETAILS_SUCCESS, personDetails };
@@ -56,9 +59,26 @@ export function savePerson(personDetails) {
     return personDetailsApi
       .savePerson(personDetails)
       .then((savedPersonDetails) => {
-        personDetails.id
-          ? dispatch(updatePersonDetailsSuccess(savedPersonDetails))
-          : dispatch(createPersonDetailsSuccess(savedPersonDetails));
+        personDetails.id === 0
+          ? dispatch(createPersonDetailsSuccess(savedPersonDetails))
+          : dispatch(updatePersonDetailsSuccess(savedPersonDetails));
+        dispatch(loadFamilyTree());
+        dispatch(loadPeopleList());
+      })
+      .catch((error) => {
+        dispatch(apiCallError(error));
+        throw error;
+      });
+  };
+}
+
+export function deletePerson(id) {
+  return function (dispatch) {
+    dispatch(beginApiCall());
+    return personDetailsApi
+      .deletePerson(id)
+      .then(() => {
+        dispatch(setSelectedPerson(intialState.selectedPerson));
         dispatch(loadFamilyTree());
         dispatch(loadPeopleList());
       })

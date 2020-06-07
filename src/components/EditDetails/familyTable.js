@@ -29,7 +29,13 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
       </Grid>
 
       {Family.map((member) => (
-        <Grid item container justify="space-between" direction="row">
+        <Grid
+          item
+          container
+          justify="space-between"
+          direction="row"
+          key={member.id}
+        >
           <Grid item>
             <Typography variant="body1">{member.label}</Typography>
           </Grid>

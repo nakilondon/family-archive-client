@@ -20,6 +20,9 @@ const children = [
   <ToggleButton key={ViewMode.SHOW_EDIT} value={ViewMode.SHOW_EDIT}>
     Edit
   </ToggleButton>,
+  <ToggleButton key={ViewMode.SHOW_ADD} value={ViewMode.SHOW_ADD}>
+    Add
+  </ToggleButton>,
   <ToggleButton key={ViewMode.SHOW_UPLOAD} value={ViewMode.SHOW_UPLOAD}>
     Upload
   </ToggleButton>,

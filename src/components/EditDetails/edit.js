@@ -62,7 +62,7 @@ const Edit = ({
               changeRelationship={changeRelationship}
             />
           </Grid>
-          <Grid container spacing={1} direction="column" xs={5}>
+          <Grid item container spacing={1} direction="column" xs={5}>
             <Grid item>
               <TextField
                 name={"preferredName"}
