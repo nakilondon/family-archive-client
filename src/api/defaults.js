@@ -28,8 +28,17 @@ const newPerson = {
   children: [],
 };
 
+const newImage = {
+  name: "not set",
+  people: [],
+  location: "",
+  date: newDate,
+  description: "",
+};
+
 module.exports = {
   newPerson,
   newDate,
   newListPerson,
+  newImage,
 };

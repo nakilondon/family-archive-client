@@ -8,4 +8,5 @@ export default {
   personDetails: "",
   selectedPerson: 253,
   personDetailsUpdate: "",
+  imageDetails: "",
 };

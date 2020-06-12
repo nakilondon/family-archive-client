@@ -4,7 +4,7 @@ import PersonDetails from "../PersonDetails/person-Details";
 import EditDetails from "../EditDetails/person-Edit";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "../Header";
-import Upload from "../UploadImage";
+import Upload from "../UploadImage/uploadImage";
 import { useSelector } from "react-redux";
 import { ViewMode } from "../../redux/actions/actionTypes";
 import { ToastContainer } from "react-toastify";
