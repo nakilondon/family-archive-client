@@ -10,7 +10,9 @@ import ImageUploader from "react-images-upload";
 import { newImage } from "../../api/defaults";
 import LocationSearch from "../common/LocationSearch";
 import DateSelect from "../common/DateSelect";
-import PersonSelect from "../common/person-Search";
+import PeopleList from "../common/PeopleList";
+
+import "./styles.css";
 
 function PersonEdit({ uploadImage }) {
   const [saving, setSaving] = useState(false);
@@ -25,18 +27,6 @@ function PersonEdit({ uploadImage }) {
 
     return () => (isMountedRef.current = false);
   }, []);
-  const [addPerson, setAddPerson] = useState(null);
-  const onSearchChange = (e, value) => {
-    setAddPerson(value.id);
-  };
-
-  function addPersonToDescription() {
-    //if (description.people.length > 0) {
-    onDescriptionChange("people", description.people.concat(addPerson));
-    //  } else {
-    //    onDescriptionChange("people", addPerson);
-    //  }
-  }
 
   function onDescriptionChange(id, value) {
     if (id === "name") {
@@ -83,84 +73,104 @@ function PersonEdit({ uploadImage }) {
   }
 
   return (
-    <Grid container direction="column" justify="center" alignItems="center">
+    <Grid
+      item
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
       <Grid item>
-        <form onSubmit={handleSave}>
-          <Grid item>
-            <TextField
-              id="description"
-              label="Description"
-              onChange={(e) => onDescriptionChange(e.target.id, e.target.value)}
-            />
-          </Grid>
-          <Grid item>
-            <TextField
-              error={existsError ? true : false}
-              helperText={existsError ? "Filename exists, please change" : ""}
-              id="name"
-              label="Picture"
-              value={description.name}
-              onChange={(e) => onDescriptionChange(e.target.id, e.target.value)}
-            />
-          </Grid>
-          <Grid item xs>
-            <LocationSearch
-              style={{ width: "100%" }}
-              label="Location"
-              onChange={onLocationChange}
-            />
-          </Grid>
-          <Grid item>
-            <DateSelect
-              id="date"
-              label="When was the photo taken"
-              dateValue={description.date}
-              onChange={onDescriptionChange}
-            />
-          </Grid>
-
-          <Grid item>
-            <Typography variant="caption" color="textSecondary">
-              Who is in the photo?
-            </Typography>
-          </Grid>
-
-          <Grid item>
-            <PersonSelect onSearchChange={onSearchChange} />
-          </Grid>
-          <Grid item xs={2}>
-            <Button
-              size="small"
-              variant="contained"
-              onClick={() => addPersonToDescription()}
-              disabled={addPerson === null ? true : false}
-              color={addPerson === null ? "inherit" : "primary"}
-            >
-              Add
-            </Button>
-          </Grid>
-
-          <Grid item>
-            <ImageUploader
-              withIcon={false}
-              buttonText="Choose images"
-              onChange={onDrop}
-              singleImage={true}
-              withPreview={true}
-              imgExtension={[".jpg", ".gif", ".png", ".gif"]}
-              maxFileSize={5242880}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              disabled={saving || description.name === "not set" ? true : false}
-            >
-              {saving ? "Saving..." : "Save"}
-            </Button>
-          </Grid>
-        </form>
+        <Typography variant="h4">Upload Image</Typography>
       </Grid>
+      <form onSubmit={handleSave} style={{ width: 900 }}>
+        <Grid item container direction="column">
+          <Grid
+            item
+            container
+            alignItems="flex-start"
+            justify="space-between"
+            direction="row"
+            spacing={2}
+          >
+            <Grid item container direction="column" xs={6}>
+              <Grid item>
+                <TextField
+                  id="description"
+                  label="Description"
+                  onChange={(e) =>
+                    onDescriptionChange(e.target.id, e.target.value)
+                  }
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  error={existsError ? true : false}
+                  helperText={
+                    existsError ? "Filename exists, please change" : ""
+                  }
+                  id="name"
+                  label="Picture"
+                  value={description.name}
+                  onChange={(e) =>
+                    onDescriptionChange(e.target.id, e.target.value)
+                  }
+                />
+              </Grid>
+              <Grid item xs>
+                <LocationSearch
+                  style={{ width: "100%" }}
+                  label="Location"
+                  onChange={onLocationChange}
+                />
+              </Grid>
+              <Grid item>
+                <DateSelect
+                  id="date"
+                  label="When was the photo taken"
+                  dateValue={description.date}
+                  onChange={onDescriptionChange}
+                />
+              </Grid>
+              <Grid item>
+                <PeopleList
+                  People={description.people}
+                  label={"Who is in the picture"}
+                  name={"people"}
+                  changePeople={onDescriptionChange}
+                />
+              </Grid>
+            </Grid>
+            <Grid item container direction="column" xs={6}>
+              <Grid item>
+                <ImageUploader
+                  withIcon={false}
+                  withPreview={true}
+                  label=""
+                  buttonText="Upload Image"
+                  onChange={onDrop}
+                  singleImage={true}
+                  imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                  maxFileSize={5242880}
+                  fileSizeError="file size is too big"
+                />
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                disabled={
+                  saving || description.name === "not set" ? true : false
+                }
+              >
+                {saving ? "Saving..." : "Save"}
+              </Button>
+            </Grid>
+          </Grid>
+        </Grid>
+      </form>
     </Grid>
   );
 }

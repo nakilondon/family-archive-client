@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import App from "./components/main-page";
 import registerServiceWorker from "./registerServiceWorker";
 import configureStore from "./redux/configureStore";
+import Gallery from "./components/common/Gallery";
 
 const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");

@@ -10,7 +10,7 @@ import RadioGroup from "@material-ui/core/RadioGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
-import FamilyTable from "./familyTable";
+import FamilyTable from "../common/PeopleList";
 
 const Edit = ({
   personDetails,
@@ -44,22 +44,22 @@ const Edit = ({
         >
           <Grid item container direction="column" xs={7}>
             <FamilyTable
-              Family={personDetails.parents}
+              People={personDetails.parents}
               label={"Parents"}
               name={"parents"}
-              changeRelationship={changeRelationship}
+              changePeople={changeRelationship}
             />
             <FamilyTable
-              Family={personDetails.spouses}
+              People={personDetails.spouses}
               label={"Spouses"}
               name={"spouses"}
-              changeRelationship={changeRelationship}
+              changePeople={changeRelationship}
             />
             <FamilyTable
-              Family={personDetails.children}
+              People={personDetails.children}
               label={"Children"}
               name={"children"}
-              changeRelationship={changeRelationship}
+              changePeople={changeRelationship}
             />
           </Grid>
           <Grid item container spacing={1} direction="column" xs={5}>

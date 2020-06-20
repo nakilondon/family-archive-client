@@ -3,8 +3,35 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { Typography, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
+//import GridList from "@material-ui/core/GridList";
+//import GridListTile from "@material-ui/core/GridListTile";
+//import AwesomeSlider from "react-awesome-slider";
+//import "react-awesome-slider/dist/styles.css";
+//import AwsSliderStyles from "react-awesome-slider/dist/styles.css";
+//import { Carousel } from "react-responsive-carousel";
+//import "react-responsive-carousel/lib/styles/carousel.min.css";
+//import "./style.css";
+import PhotoGallery from "../common/photoGallery";
+//import Gallery from "../common/Gallery";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    overflow: "hidden",
+    backgroundColor: theme.palette.background.paper,
+  },
+  gridList: {
+    width: 500,
+    height: 450,
+  },
+}));
 
 const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
+  const classes = useStyles();
+
   const FamilyTable = (Family) => {
     if (Family == null) {
       return <p>No Family</p>;
@@ -121,6 +148,14 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
     );
   };
 
+  let photos = [];
+  personDetails.images.map((i) =>
+    photos.push({
+      photo: `familytree/original/${i.fileName}`,
+      thumbnail: `familytree/thumbnail/${i.fileName}`,
+      caption: i.caption,
+    })
+  );
   return (
     <Grid
       spacing={3}
@@ -146,10 +181,22 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
         <Grid container xs={3} item justify="flex-end">
           {FamilyTable(personDetails.family)}
         </Grid>
-        <Grid container xs={5} item justify="flex-start">
+        <Grid container xs={3} item justify="flex-start">
           {OtherDetails(personDetails)}
         </Grid>
       </Grid>
+
+      <PhotoGallery photos={photos} />
+
+      {/*
+      <Grid item container style={{ height: "400px" }}>
+        <AwesomeSlider cssModule={AwsSliderStyles}>
+          {personDetails.images.map((image) => (
+            <div data-src={`familytree/img/${image}`} />
+          ))}
+        </AwesomeSlider>
+      </Grid>
+          */}
     </Grid>
   );
 };
