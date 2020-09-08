@@ -6,18 +6,24 @@ import { loadPeopleList } from "../../redux/actions/peopleListActions";
 import PropTypes from "prop-types";
 import Spinner from "./Spinner";
 import { connect } from "react-redux";
+import { isLoaded } from "react-redux-firebase";
 
 function PersonSelect({
   peopleList,
   loadPeopleList,
   onSearchChange,
   selectedPerson,
+  firebase,
+  label,
 }) {
   useEffect(() => {
-    if (peopleList.length === 0) {
-      loadPeopleList().catch((error) => {
-        alert("Loading people list failed " + error);
-      });
+    if (isLoaded(firebase.auth) && peopleList.length === 0) {
+      //const token = firebase.auth.stsTokenManager.accessToken;
+      loadPeopleList(firebase.auth.stsTokenManager.accessToken).catch(
+        (error) => {
+          alert("Loading people list failed " + error);
+        }
+      );
     }
   });
 
@@ -34,7 +40,7 @@ function PersonSelect({
         options={peopleList}
         style={{ width: 400 }}
         getOptionLabel={(option) => option.label}
-        renderInput={(params) => <TextField {...params} label="Find Someone" />}
+        renderInput={(params) => <TextField {...params} label={label} />}
         onChange={onSearchChange}
       />
     );
@@ -47,11 +53,13 @@ PersonSelect.prototypes = {
   loadPeopleList: PropTypes.func.isRequired,
   onSearchChange: PropTypes.func.isRequired,
   selectedPerson: PropTypes.object.isOptional,
+  firebase: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     peopleList: state.peopleList,
+    firebase: state.firebase,
   };
 }
 

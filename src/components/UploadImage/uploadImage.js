@@ -16,7 +16,6 @@ import "./styles.css";
 
 function PersonEdit({ uploadImage }) {
   const [saving, setSaving] = useState(false);
-  const [errors, setErrors] = useState(false);
   const [existsError, setExistsErrors] = useState(false);
   const isMountedRef = useRef(null);
   const [description, setDescription] = useState({ ...newImage });

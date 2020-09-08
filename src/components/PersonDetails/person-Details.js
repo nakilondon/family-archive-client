@@ -18,6 +18,7 @@ function PersonDetails({
   setSelectedPerson,
   deletePerson,
   setViewMode,
+  firebase,
 }) {
   const [loading, setLoading] = useState(true);
 
@@ -25,18 +26,26 @@ function PersonDetails({
     if (personDetails.id === selectedPerson) {
       setLoading(false);
     } else {
-      loadPersonDetails(selectedPerson)
+      loadPersonDetails(
+        selectedPerson,
+        firebase.auth.stsTokenManager.accessToken
+      )
         .catch((error) => {
           alert("Loading person details failed " + error);
         })
         .then(() => setLoading(false));
     }
-  }, [personDetails.id, selectedPerson, loadPersonDetails]);
+  }, [
+    personDetails.id,
+    selectedPerson,
+    loadPersonDetails,
+    firebase.auth.stsTokenManager.accessToken,
+  ]);
 
   function handeldelete(event) {
     event.preventDefault();
 
-    deletePerson(personDetails.id)
+    deletePerson(personDetails.id, firebase.auth.stsTokenManager.accessToken)
       .then(() => {
         toast.success(`${personDetails.preferredName} Deleted ...`);
         setViewMode(ViewMode.SHOW_FAMILY_TREE);
@@ -79,12 +88,14 @@ PersonDetails.prototypes = {
   setSelectedPerson: PropTypes.func.isRequired,
   deletePerson: PropTypes.func.isRequired,
   setViewMode: PropTypes.func.isRequired,
+  firbase: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     personDetails: state.personDetails,
     selectedPerson: state.selectedPerson,
+    firebase: state.firebase,
   };
 }
 

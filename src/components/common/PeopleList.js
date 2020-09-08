@@ -60,7 +60,7 @@ const PeopleList = ({ People, label, name, changePeople }) => {
         alignItems="center"
       >
         <Grid item>
-          <PersonSelect onSearchChange={onSearchChange} />
+          <PersonSelect label="Find Someone" onSearchChange={onSearchChange} />
         </Grid>
         <Grid item xs={2}>
           <Button

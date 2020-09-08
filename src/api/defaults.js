@@ -11,6 +11,7 @@ const newListPerson = {
 
 const newPerson = {
   id: 0,
+  token: "",
   gender: "Male",
   preferredName: "",
   givenNames: "",

@@ -6,7 +6,8 @@ export default {
   familyTree: [],
   peopleList: [],
   personDetails: "",
-  selectedPerson: 253,
+  selectedPerson: 267,
   personDetailsUpdate: "",
   imageDetails: "",
+  userList: [],
 };

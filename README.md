@@ -1,4 +1,4 @@
-# Todo listy
+# Todo list
 
 ## Security
 
@@ -27,5 +27,5 @@
 
 ## People Details
 
-- [] Show relationship to person selected
-- [] Selection of portrait
+- [ ] Show relationship to person selected
+- [ ] Selection of portrait

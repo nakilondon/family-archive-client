@@ -5,7 +5,6 @@ import { loadFamilyTree } from "./familyTreeActions";
 import { loadPeopleList } from "./peopleListActions";
 import { setSelectedPerson } from "./selectedPersonActions";
 import intialState from "../reducers/initialState";
-import { setViewMode } from "./viewActions";
 
 export function loadPersonDetailsSuccess(personDetails) {
   return { type: types.LOAD_PERSON_DETAILS_SUCCESS, personDetails };
@@ -23,11 +22,11 @@ export function createPersonDetailsSuccess(savedPersonDetails) {
   return { type: types.CREATE_PERSON_DETAILS_SUCCESS, savedPersonDetails };
 }
 
-export function loadPersonDetails(id) {
+export function loadPersonDetails(id, token) {
   return function (dispatch) {
     dispatch(beginApiCall());
     return personDetailsApi
-      .getPersonDetails(id)
+      .getPersonDetails(id, token)
       .then((personDetails) => {
         dispatch(loadPersonDetailsSuccess(personDetails));
       })
@@ -38,11 +37,11 @@ export function loadPersonDetails(id) {
   };
 }
 
-export function loadPersonDetailsForUpdate(id) {
+export function loadPersonDetailsForUpdate(id, token) {
   return function (dispatch) {
     dispatch(beginApiCall());
     return personDetailsApi
-      .getPersonDetailsForUpdate(id)
+      .getPersonDetailsForUpdate(id, token)
       .then((personDetails) => {
         dispatch(loadPersonDetailsForUpdateSuccess(personDetails));
       })
@@ -53,7 +52,7 @@ export function loadPersonDetailsForUpdate(id) {
   };
 }
 
-export function savePerson(personDetails) {
+export function savePerson(personDetails, token) {
   return function (dispatch, getState) {
     dispatch(beginApiCall());
     return personDetailsApi
@@ -62,8 +61,8 @@ export function savePerson(personDetails) {
         personDetails.id === 0
           ? dispatch(createPersonDetailsSuccess(savedPersonDetails))
           : dispatch(updatePersonDetailsSuccess(savedPersonDetails));
-        dispatch(loadFamilyTree());
-        dispatch(loadPeopleList());
+        dispatch(loadFamilyTree(token));
+        dispatch(loadPeopleList(token));
       })
       .catch((error) => {
         dispatch(apiCallError(error));
@@ -72,15 +71,15 @@ export function savePerson(personDetails) {
   };
 }
 
-export function deletePerson(id) {
+export function deletePerson(id, token) {
   return function (dispatch) {
     dispatch(beginApiCall());
     return personDetailsApi
       .deletePerson(id)
       .then(() => {
         dispatch(setSelectedPerson(intialState.selectedPerson));
-        dispatch(loadFamilyTree());
-        dispatch(loadPeopleList());
+        dispatch(loadFamilyTree(token));
+        dispatch(loadPeopleList(token));
       })
       .catch((error) => {
         dispatch(apiCallError(error));

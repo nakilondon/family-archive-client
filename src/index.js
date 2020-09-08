@@ -2,24 +2,11 @@ import "./index.css";
 import "bootstrap/dist/css/bootstrap.css";
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import App from "./components/main-page";
+import App from "./components/main-page/App";
 import registerServiceWorker from "./registerServiceWorker";
-import configureStore from "./redux/configureStore";
-import Gallery from "./components/common/Gallery";
 
-const baseUrl = document.getElementsByTagName("base")[0].getAttribute("href");
 const rootElement = document.getElementById("root");
-const store = configureStore();
 
-ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </BrowserRouter>,
-  rootElement
-);
+ReactDOM.render(<App />, rootElement);
 
 registerServiceWorker();

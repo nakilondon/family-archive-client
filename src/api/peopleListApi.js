@@ -1,5 +1,7 @@
 import { handleResponse, handleError } from "./apiUtils";
 
-export function getPeopleList() {
-  return fetch("familytree/list").then(handleResponse).catch(handleError);
+export function getPeopleList(token) {
+  return fetch("familytree/list", { headers: { Authorization: token } })
+    .then(handleResponse)
+    .catch(handleError);
 }

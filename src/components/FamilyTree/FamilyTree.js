@@ -12,12 +12,15 @@ function FamilyTree({
   loadFamilyTree,
   selectedPerson,
   setSelectedPerson,
+  firebase,
 }) {
   useEffect(() => {
     if (familyTree.length === 0) {
-      loadFamilyTree().catch((error) => {
-        alert("Loading family tree failed " + error);
-      });
+      loadFamilyTree(firebase.auth.stsTokenManager.accessToken).catch(
+        (error) => {
+          alert("Loading family tree failed " + error);
+        }
+      );
     }
   });
 
@@ -44,12 +47,14 @@ FamilyTree.prototypes = {
   loadFamilyTree: PropTypes.func.isRequired,
   selectedPerson: PropTypes.number.isRequired,
   setSelectedPerson: PropTypes.func.isRequired,
+  firebase: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
   return {
     familyTree: state.familyTree,
     selectedPerson: state.selectedPerson,
+    firebase: state.firebase,
   };
 }
 

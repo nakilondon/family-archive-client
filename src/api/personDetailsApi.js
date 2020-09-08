@@ -1,11 +1,13 @@
 import { handleResponse, handleError } from "./apiUtils";
 
-export function getPersonDetails(id) {
-  return fetch(`familytree/${id}`).then(handleResponse).catch(handleError);
+export function getPersonDetails(id, token) {
+  return fetch(`familytree/${id}`, { headers: { Authorization: token } })
+    .then(handleResponse)
+    .catch(handleError);
 }
 
-export function getPersonDetailsForUpdate(id) {
-  return fetch(`familytree/update/${id}`)
+export function getPersonDetailsForUpdate(id, token) {
+  return fetch(`familytree/update/${id}`, { headers: { Authorization: token } })
     .then(handleResponse)
     .catch(handleError);
 }

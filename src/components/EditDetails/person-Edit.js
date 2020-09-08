@@ -20,6 +20,7 @@ function PersonEdit({
   personDetails,
   setViewMode,
   viewMode,
+  firebase,
 }) {
   const [loading, setLoading] = useState(true);
   const [personDetailsUpdate, setPersonDetailsUpdate] = useState({
@@ -32,6 +33,11 @@ function PersonEdit({
 
   useEffect(() => {
     isMountedRef.current = true;
+    const valueData = { token: firebase.auth.stsTokenManager.accessToken };
+    setPersonDetailsUpdate((prevPersonDetails) => ({
+      ...prevPersonDetails,
+      ...valueData,
+    }));
 
     if (viewMode === ViewMode.SHOW_ADD) {
       setLoading(false);
@@ -44,7 +50,10 @@ function PersonEdit({
       ) {
         setMounted(true);
         setLoading(true);
-        loadPersonDetailsForUpdate(selectedPerson)
+        loadPersonDetailsForUpdate(
+          selectedPerson,
+          firebase.auth.stsTokenManager.accessToken
+        )
           .catch((error) => {
             alert("Loading person details failed " + error);
           })
@@ -72,6 +81,7 @@ function PersonEdit({
     setViewMode,
     mounted,
     viewMode,
+    firebase,
   ]);
 
   function handleChange(e) {
@@ -118,8 +128,9 @@ function PersonEdit({
   function handleSave(event) {
     event.preventDefault();
     if (!formIsValid()) return;
+
     setSaving(true);
-    savePerson(personDetailsUpdate)
+    savePerson(personDetailsUpdate, firebase.auth.stsTokenManager.accessToken)
       .then(() => {
         toast.success(
           `${personDetailsUpdate.preferredName} ${
@@ -172,6 +183,7 @@ PersonEdit.prototypes = {
   savePerson: PropTypes.func.isRequired,
   setViewMode: PropTypes.func.isRequired,
   viewMode: PropTypes.object.isRequired,
+  fireBase: PropTypes.object.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -180,6 +192,7 @@ function mapStateToProps(state) {
       state.view === ViewMode.SHOW_ADD ? newPerson : state.personDetailsUpdate,
     selectedPerson: state.selectedPerson,
     viewMode: state.view,
+    firebase: state.firebase,
   };
 }
 

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { ReactBnbGallery } from "react-bnb-gallery";
+import Button from "@material-ui/core/Button";
 import "react-bnb-gallery/dist/style.css";
 
 export default class Example extends Component {
@@ -20,7 +21,14 @@ export default class Example extends Component {
   render() {
     return (
       <>
-        <button onClick={this.toggleGallery}>Open gallery</button>
+        <Button
+          size="small"
+          variant="contained"
+          color="primary"
+          onClick={this.toggleGallery}
+        >
+          Open gallery
+        </Button>
         <ReactBnbGallery
           show={this.state.galleryOpened}
           photos={this.props.photos}

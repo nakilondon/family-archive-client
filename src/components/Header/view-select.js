@@ -6,8 +6,10 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import * as viewActions from "../../redux/actions/viewActions";
 import { bindActionCreators } from "redux";
+import { useSelector } from "react-redux";
+import { isLoaded } from "react-redux-firebase";
 
-const children = [
+const adminMenu = [
   <ToggleButton
     key={ViewMode.SHOW_FAMILY_TREE}
     value={ViewMode.SHOW_FAMILY_TREE}
@@ -26,12 +28,29 @@ const children = [
   <ToggleButton key={ViewMode.SHOW_UPLOAD} value={ViewMode.SHOW_UPLOAD}>
     Upload
   </ToggleButton>,
+  <ToggleButton key={ViewMode.SHOW_USERS} value={ViewMode.SHOW_USERS}>
+    Users
+  </ToggleButton>,
+];
+
+const viewMenu = [
+  <ToggleButton
+    key={ViewMode.SHOW_FAMILY_TREE}
+    value={ViewMode.SHOW_FAMILY_TREE}
+  >
+    Family Tree
+  </ToggleButton>,
+  <ToggleButton key={ViewMode.SHOW_DETAIL} value={ViewMode.SHOW_DETAIL}>
+    Detail
+  </ToggleButton>,
 ];
 
 function ViewSelect({ selected, setViewMode }) {
   function handleChange(event, value) {
     setViewMode(value);
   }
+
+  const profile = useSelector(({ firebase: { profile } }) => profile);
 
   return (
     <div>
@@ -41,7 +60,13 @@ function ViewSelect({ selected, setViewMode }) {
         value={selected}
         onChange={handleChange}
       >
-        {children}
+        {!isLoaded(profile) ? (
+          <span>Loading...</span>
+        ) : profile.token.claims.hasOwnProperty("admin") ? (
+          adminMenu
+        ) : (
+          viewMenu
+        )}
       </ToggleButtonGroup>
     </div>
   );

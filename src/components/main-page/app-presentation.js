@@ -8,6 +8,8 @@ import Upload from "../UploadImage/uploadImage";
 import { useSelector } from "react-redux";
 import { ViewMode } from "../../redux/actions/actionTypes";
 import { ToastContainer } from "react-toastify";
+import UserList from "../Users/UserList";
+import UserProfile from "../Users/UserProfile";
 import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -32,6 +34,10 @@ const ViewSwitch = (props) => {
       return <EditDetails />;
     case ViewMode.SHOW_UPLOAD:
       return <Upload />;
+    case ViewMode.SHOW_USERS:
+      return <UserList />;
+    case ViewMode.SHOW_PROFILE:
+      return <UserProfile />;
     default:
       return <FamilyTree />;
   }
@@ -39,6 +45,7 @@ const ViewSwitch = (props) => {
 
 const AppPresentation = (props) => {
   const classes = useStyles();
+  const firebase = useSelector((state) => state.firebase);
 
   return (
     <div className={classes.root}>
@@ -46,6 +53,7 @@ const AppPresentation = (props) => {
         subtitle="Family Archive"
         activePerson={props.activePerson}
         selectedPerson={props.selectedPerson}
+        firebase={firebase}
       />
       {ViewSwitch(props)}
       <ToastContainer autoClose={3000} hideProgressBar />

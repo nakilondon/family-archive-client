@@ -3,34 +3,12 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { Typography, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
-//import GridList from "@material-ui/core/GridList";
-//import GridListTile from "@material-ui/core/GridListTile";
-//import AwesomeSlider from "react-awesome-slider";
-//import "react-awesome-slider/dist/styles.css";
-//import AwsSliderStyles from "react-awesome-slider/dist/styles.css";
-//import { Carousel } from "react-responsive-carousel";
-//import "react-responsive-carousel/lib/styles/carousel.min.css";
-//import "./style.css";
+import { useSelector } from "react-redux";
 import PhotoGallery from "../common/photoGallery";
-//import Gallery from "../common/Gallery";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-    justifyContent: "space-around",
-    overflow: "hidden",
-    backgroundColor: theme.palette.background.paper,
-  },
-  gridList: {
-    width: 500,
-    height: 450,
-  },
-}));
+import { isLoaded } from "react-redux-firebase";
 
 const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
-  const classes = useStyles();
+  const profile = useSelector(({ firebase: { profile } }) => profile);
 
   const FamilyTable = (Family) => {
     if (Family == null) {
@@ -135,14 +113,20 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
               <Typography variant="h6">{personDetails.note}</Typography>
             </Grid>
           )}
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={deletePerson}
-          >
-            Delete
-          </Button>
+          {!isLoaded(profile) ? (
+            <p>Loading...</p>
+          ) : (
+            profile.token.claims.hasOwnProperty("admin") && (
+              <Button
+                size="small"
+                variant="contained"
+                color="secondary"
+                onClick={deletePerson}
+              >
+                Delete
+              </Button>
+            )
+          )}
         </Paper>
       </Grid>
     );
