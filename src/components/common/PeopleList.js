@@ -4,10 +4,10 @@ import Button from "@material-ui/core/Button";
 import { Typography } from "@material-ui/core";
 import PersonSelect from "../common/person-Search";
 
-const FamilyTable = ({ Family, label, name, changeRelationship }) => {
-  function removeRelationship(id) {
-    const newFamily = Family.filter((person) => person.id !== id);
-    changeRelationship(name, newFamily);
+const PeopleList = ({ People, label, name, changePeople }) => {
+  function removePeople(id) {
+    const newList = People.filter((person) => person.id !== id);
+    changePeople(name, newList);
   }
 
   const [addPerson, setAddPerson] = useState(null);
@@ -15,9 +15,9 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
     setAddPerson(value);
   };
 
-  function addRelationship() {
-    const newFamily = Family.concat(addPerson);
-    changeRelationship(name, newFamily);
+  function addPersonToList() {
+    const newList = People.concat(addPerson);
+    changePeople(name, newList);
   }
 
   return (
@@ -28,7 +28,7 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
         </Typography>
       </Grid>
 
-      {Family.map((member) => (
+      {People.map((member) => (
         <Grid
           item
           container
@@ -45,7 +45,7 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
               size="small"
               variant="contained"
               color="primary"
-              onClick={() => removeRelationship(member.id)}
+              onClick={() => removePeople(member.id)}
             >
               Remove
             </Button>
@@ -60,13 +60,13 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
         alignItems="center"
       >
         <Grid item>
-          <PersonSelect onSearchChange={onSearchChange} />
+          <PersonSelect label="Find Someone" onSearchChange={onSearchChange} />
         </Grid>
         <Grid item xs={2}>
           <Button
             size="small"
             variant="contained"
-            onClick={() => addRelationship()}
+            onClick={() => addPersonToList()}
             disabled={addPerson === null ? true : false}
             color={addPerson === null ? "inherit" : "primary"}
           >
@@ -81,4 +81,4 @@ const FamilyTable = ({ Family, label, name, changeRelationship }) => {
   );
 };
 
-export default FamilyTable;
+export default PeopleList;

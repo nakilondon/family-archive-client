@@ -3,8 +3,13 @@ import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { Typography, Grid } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
+import { useSelector } from "react-redux";
+import PhotoGallery from "../common/photoGallery";
+import { isLoaded } from "react-redux-firebase";
 
 const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
+  const profile = useSelector(({ firebase: { profile } }) => profile);
+
   const FamilyTable = (Family) => {
     if (Family == null) {
       return <p>No Family</p>;
@@ -108,19 +113,33 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
               <Typography variant="h6">{personDetails.note}</Typography>
             </Grid>
           )}
-          <Button
-            size="small"
-            variant="contained"
-            color="secondary"
-            onClick={deletePerson}
-          >
-            Delete
-          </Button>
+          {!isLoaded(profile) ? (
+            <p>Loading...</p>
+          ) : (
+            profile.token.claims.hasOwnProperty("admin") && (
+              <Button
+                size="small"
+                variant="contained"
+                color="secondary"
+                onClick={deletePerson}
+              >
+                Delete
+              </Button>
+            )
+          )}
         </Paper>
       </Grid>
     );
   };
 
+  let photos = [];
+  personDetails.images.map((i) =>
+    photos.push({
+      photo: `familytree/original/${i.fileName}`,
+      thumbnail: `familytree/thumbnail/${i.fileName}`,
+      caption: i.caption,
+    })
+  );
   return (
     <Grid
       spacing={3}
@@ -146,10 +165,22 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
         <Grid container xs={3} item justify="flex-end">
           {FamilyTable(personDetails.family)}
         </Grid>
-        <Grid container xs={5} item justify="flex-start">
+        <Grid container xs={3} item justify="flex-start">
           {OtherDetails(personDetails)}
         </Grid>
       </Grid>
+
+      <PhotoGallery photos={photos} />
+
+      {/*
+      <Grid item container style={{ height: "400px" }}>
+        <AwesomeSlider cssModule={AwsSliderStyles}>
+          {personDetails.images.map((image) => (
+            <div data-src={`familytree/img/${image}`} />
+          ))}
+        </AwesomeSlider>
+      </Grid>
+          */}
     </Grid>
   );
 };

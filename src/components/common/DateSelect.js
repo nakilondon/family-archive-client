@@ -52,19 +52,19 @@ function SelectDate({ dateValue, id, onChange, label }) {
             name="year"
             type="number"
             label="Year"
-            defaultValue={dateValue.year}
+            defaultValue={dateValue?.year}
             onChange={(e) => handleDateChange("year", e.target.value)}
             style={{ width: 100 }}
           />
         </Grid>
         <Grid item>
-          <Box visibility={dateValue.year === 0 ? "hidden" : "visible"}>
+          <Box visibility={dateValue?.year > 0 ? "visible" : "hidden"}>
             <TextField
               style={{ width: 100 }}
               name="month"
               select
               label="Month"
-              defaultValue={dateValue.month}
+              defaultValue={dateValue?.month}
               onChange={(e, newValue) => handleDateChange("month", newValue)}
             >
               {months.map((month) => (
@@ -77,13 +77,13 @@ function SelectDate({ dateValue, id, onChange, label }) {
         </Grid>
 
         <Grid item>
-          <Box visibility={dateValue.month === 0 ? "hidden" : "visible"}>
+          <Box visibility={dateValue?.month > 0 ? "visible" : "hidden"}>
             <TextField
               name="day"
               type="number"
               label="Day"
               style={{ width: 100 }}
-              defaultValue={dateValue.day}
+              defaultValue={dateValue?.day}
               onChange={(e) => handleDateChange("day", e.target.value)}
             />
           </Box>

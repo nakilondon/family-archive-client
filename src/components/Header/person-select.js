@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { setSelectedPerson } from "../../redux/actions/selectedPersonActions";
 import Selector from "../common/person-Search";
+import { isLoaded } from "react-redux-firebase";
 
-function PersonSelect({ setSelectedPerson, peopleList, selectedPerson }) {
+function PersonSelect({
+  setSelectedPerson,
+  peopleList,
+  selectedPerson,
+  profile,
+}) {
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
+  useEffect(() => {
+    if (isLoaded(profile) && !profileLoaded) {
+      setSelectedPerson(profile.defaultPerson);
+      setProfileLoaded(true);
+    }
+  }, [profile, profile.defaultPerson, profileLoaded, setSelectedPerson]);
+
   const onSearchChange = (e, value) => {
     if (value?.id) setSelectedPerson(value.id);
   };
@@ -16,7 +31,11 @@ function PersonSelect({ setSelectedPerson, peopleList, selectedPerson }) {
 
   return (
     <>
-      <Selector selectedPerson={selected} onSearchChange={onSearchChange} />
+      <Selector
+        label="Find Someone"
+        selectedPerson={selected}
+        onSearchChange={onSearchChange}
+      />
     </>
   );
 }
@@ -31,6 +50,7 @@ function mapStateToProps(state) {
   return {
     peopleList: state.peopleList,
     selectedPerson: state.selectedPerson,
+    profile: state.firebase.profile,
   };
 }
 

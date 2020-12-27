@@ -6,11 +6,11 @@ export function loadFamilyTreeSuccess(familyTree) {
   return { type: types.LOAD_FAMILY_TREE_SUCCESS, familyTree };
 }
 
-export function loadFamilyTree() {
+export function loadFamilyTree(token) {
   return function (dispatch) {
     dispatch(beginApiCall());
     return familyTreeApi
-      .getFamilyTree()
+      .getFamilyTree(token)
       .then((familyTree) => {
         dispatch(loadFamilyTreeSuccess(familyTree));
       })
