@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import FamilyTreeDiagram from "./FamilyDiagram";
 import { loadFamilyTree } from "../../redux/actions/familyTreeActions";
 import { setSelectedPerson } from "../../redux/actions/selectedPersonActions";
@@ -14,15 +14,23 @@ function FamilyTree({
   setSelectedPerson,
   firebase,
 }) {
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if (familyTree.length === 0) {
-      loadFamilyTree(firebase.auth.stsTokenManager.accessToken).catch(
-        (error) => {
+    if ((familyTree.length === 0) & !loading) {
+      setLoading(true);
+      loadFamilyTree(firebase.auth.stsTokenManager.accessToken)
+        .catch((error) => {
           alert("Loading family tree failed " + error);
-        }
-      );
+        })
+        .then(() => setLoading(false));
     }
-  });
+  }, [
+    familyTree.length,
+    loading,
+    loadFamilyTree,
+    firebase.auth.stsTokenManager.accessToken,
+  ]);
 
   const content =
     familyTree.length === 0 ? (

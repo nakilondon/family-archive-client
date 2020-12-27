@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Paper from "@material-ui/core/Paper";
 import { Typography, Grid } from "@material-ui/core";
@@ -7,7 +7,13 @@ import { useSelector } from "react-redux";
 import PhotoGallery from "../common/photoGallery";
 import { isLoaded } from "react-redux-firebase";
 
-const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
+const OutputDetails = ({
+  personDetails,
+  setSelectedPerson,
+  deletePerson,
+  setSelectedPicture,
+  setViewMode,
+}) => {
   const profile = useSelector(({ firebase: { profile } }) => profile);
 
   const FamilyTable = (Family) => {
@@ -135,9 +141,11 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
   let photos = [];
   personDetails.images.map((i) =>
     photos.push({
-      photo: `familytree/original/${i.fileName}`,
-      thumbnail: `familytree/thumbnail/${i.fileName}`,
+      photo: `picture/original/${i.fileName}`,
+      thumbnail: `picture/img/${i.fileName}`,
       caption: i.caption,
+      orientation: i.orientation,
+      id: i.id,
     })
   );
   return (
@@ -152,7 +160,7 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
         <Typography variant="h4">{personDetails.preferredName}</Typography>
       </Grid>
       <Grid item>
-        <img alt="portrait" src={`familytree/img/${personDetails.portrait}`} />
+        <img alt="portrait" src={`picture/img/${personDetails.portrait}`} />
       </Grid>
       <Grid
         item
@@ -169,18 +177,26 @@ const OutputDetails = ({ personDetails, setSelectedPerson, deletePerson }) => {
           {OtherDetails(personDetails)}
         </Grid>
       </Grid>
-
-      <PhotoGallery photos={photos} />
-
-      {/*
-      <Grid item container style={{ height: "400px" }}>
-        <AwesomeSlider cssModule={AwsSliderStyles}>
-          {personDetails.images.map((image) => (
-            <div data-src={`familytree/img/${image}`} />
-          ))}
-        </AwesomeSlider>
-      </Grid>
-          */}
+      {photos.length > 0 && (
+        <Grid
+          item
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+        >
+          <Grid item>
+            <Typography variant="h5">Photos</Typography>
+          </Grid>
+          <Grid item>
+            <PhotoGallery
+              photos={photos}
+              setSelectedPicture={setSelectedPicture}
+              setViewMode={setViewMode}
+            />
+          </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 };
