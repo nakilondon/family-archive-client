@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { loadPeopleList } from "../../redux/actions/peopleListActions";
@@ -16,16 +16,18 @@ function PersonSelect({
   firebase,
   label,
 }) {
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    if (isLoaded(firebase.auth) && peopleList.length === 0) {
-      //const token = firebase.auth.stsTokenManager.accessToken;
-      loadPeopleList(firebase.auth.stsTokenManager.accessToken).catch(
-        (error) => {
+    if (isLoaded(firebase.auth) && peopleList.length === 0 && !loading) {
+      setLoading(true);
+      loadPeopleList(firebase.auth.stsTokenManager.accessToken)
+        .catch((error) => {
           alert("Loading people list failed " + error);
-        }
-      );
+        })
+        .then(() => setLoading(false));
     }
-  });
+  }, [firebase.auth, peopleList.length, loading, loadPeopleList]);
 
   const person = selectedPerson === null ? "" : selectedPerson;
 

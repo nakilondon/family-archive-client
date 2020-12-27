@@ -10,6 +10,7 @@ import { ViewMode } from "../../redux/actions/actionTypes";
 import { ToastContainer } from "react-toastify";
 import UserList from "../Users/UserList";
 import UserProfile from "../Users/UserProfile";
+import PictureDetails from "../PictureDetails/pictureDetails";
 import "react-toastify/dist/ReactToastify.css";
 
 const useStyles = makeStyles((theme) => ({
@@ -38,6 +39,8 @@ const ViewSwitch = (props) => {
       return <UserList />;
     case ViewMode.SHOW_PROFILE:
       return <UserProfile />;
+    case ViewMode.SHOW_PICTURE_DETAIL:
+      return <PictureDetails />;
     default:
       return <FamilyTree />;
   }

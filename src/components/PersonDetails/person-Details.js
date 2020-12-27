@@ -10,6 +10,7 @@ import { deletePerson } from "../../redux/actions/personDetailsActions";
 import { setViewMode } from "../../redux/actions/viewActions";
 import { ViewMode } from "../../redux/actions/actionTypes";
 import { toast } from "react-toastify";
+import { setSelectedPicture } from "../../redux/actions/selectedPictureActions";
 
 function PersonDetails({
   personDetails,
@@ -19,6 +20,7 @@ function PersonDetails({
   deletePerson,
   setViewMode,
   firebase,
+  setSelectedPicture,
 }) {
   const [loading, setLoading] = useState(true);
 
@@ -63,6 +65,8 @@ function PersonDetails({
       personDetails={personDetails}
       setSelectedPerson={setSelectedPerson}
       deletePerson={handeldelete}
+      setSelectedPicture={setSelectedPicture}
+      setViewMode={setViewMode}
     />
   );
 
@@ -89,6 +93,7 @@ PersonDetails.prototypes = {
   deletePerson: PropTypes.func.isRequired,
   setViewMode: PropTypes.func.isRequired,
   firbase: PropTypes.object.isRequired,
+  setSelectedPicture: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -104,6 +109,7 @@ const mapDispatchToProps = {
   setSelectedPerson,
   deletePerson,
   setViewMode,
+  setSelectedPicture,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonDetails);

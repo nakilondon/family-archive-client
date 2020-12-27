@@ -10,4 +10,6 @@ export default {
   personDetailsUpdate: "",
   imageDetails: "",
   userList: [],
+  selectedPicture: 0,
+  pictureDetails: "",
 };

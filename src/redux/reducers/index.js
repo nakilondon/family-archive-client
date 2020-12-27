@@ -8,6 +8,8 @@ import personDetailsUpdate from "./personDetailsUpdateReducer";
 import imageUpload from "./imageUploadReducer";
 import userList from "./userListReducer";
 import { reducer as firebase } from "react-redux-firebase";
+import selectedPicture from "./selectedPictureReducer";
+import pictureDetails from "./pictureDetailsReducer";
 
 const rootReducer = combineReducers({
   view,
@@ -18,6 +20,8 @@ const rootReducer = combineReducers({
   personDetailsUpdate,
   imageUpload,
   userList,
+  selectedPicture,
+  pictureDetails,
   firebase,
 });
 

@@ -47,7 +47,11 @@ function PersonEdit({ uploadImage }) {
 
   function onLocationChange(id, location) {
     if (location !== null) {
-      onDescriptionChange("location", location.description);
+      const locationSave = {
+        description: location.description,
+        placeId: location.place_id,
+      };
+      onDescriptionChange("location", locationSave);
     }
   }
 
@@ -59,7 +63,7 @@ function PersonEdit({ uploadImage }) {
       .then((response) => {
         toast.success(`${description.name} successfully saved ...`);
         setSaving(false);
-        setDescription(...newImage);
+        setDescription({ ...newImage });
         setPicture({});
       })
       .catch((error) => {
