@@ -1,12 +1,7 @@
 import PropTypes from "prop-types";
 import Grid from "@material-ui/core/Grid";
-import { TextField, Typography } from "@material-ui/core";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { newImage } from "../../api/defaults";
-import LocationSearch from "../common/LocationSearch";
-import DateSelect from "../common/DateSelect";
-import PeopleList from "../common/PeopleList";
 import React, { useEffect, useState } from "react";
 import {
   loadPictureDetails,
