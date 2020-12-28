@@ -1,6 +1,6 @@
 import React, { Component, createRef } from 'react';
 import { FamDiagram } from 'basicprimitivesreact';
-import primitives from 'basicprimitives';
+import { Enabled, NeighboursSelectionMode } from "basicprimitives";
 import ResizeObserver from "resize-observer-polyfill";
 
 import './FamilyTree.css'
@@ -60,8 +60,8 @@ export default class FamilyTreeDiagram extends Component {
             cursorItem: id,
             
             
-            neighboursSelectionMode: primitives.common.NeighboursSelectionMode.ParentsChildrenSiblingsAndSpouses,
-            hasSelectorCheckbox: primitives.common.Enabled.False,
+            neighboursSelectionMode: NeighboursSelectionMode.ParentsChildrenSiblingsAndSpouses,
+            hasSelectorCheckbox: Enabled.False,
             normalLevelShift: 20,
             dotLevelShift: 20,
             lineLevelShift: 10,
